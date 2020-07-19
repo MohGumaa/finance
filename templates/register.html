@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post" id="myForm">
+        <div class="form-group">
+            <label for="username">Enter username</label>
+            <input autocomplete="off" autofocus class="form-control" name="username" id="username" placeholder="Username" type="text">
+            <div id="warningAlert" class="invalid-feedback" style="display: none;"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Enter password</label>
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <label for="confirmation">Reconfirmation</label>
+            <input class="form-control" name="confirmation" placeholder="Re-enter your password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+        <script>
+            var regForm = document.getElementById("myForm");
+            $(document).ready(function(){
+                $('form').on('submit', function(e) {
+                    e.preventDefault();
+                    let input = document.getElementById("username").value;
+                    $.get('/check?username=' + input, function(response){
+                        if(response == false) {
+                            $('#warningAlert').text("UserName already taken!,Please choose other username").show();
+                        }
+                        else
+                        {
+                            regForm.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+{% endblock %}
